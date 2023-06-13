@@ -1,0 +1,5 @@
+export enum AddressEnum {
+  PRESENT = 'PRESENT',
+  PERMANENT = 'PERMANENT',
+  PERMANENT_IN_CAPITAL = 'PERMANENT_IN_CAPITAL',
+}
