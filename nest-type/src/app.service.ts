@@ -1,22 +1,20 @@
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
+import { UserDto } from './common/dto/user/user.dto';
+import { AddressEntity } from './common/entity/address.entity';
 import { UserEntity } from './common/entity/user/user.entity';
+import { AddressEnum } from './common/enum/address/address.enum';
 import { GenderEnum } from './common/enum/address/user/gender.enum';
 import { getRandomEnumValue } from './common/function/get-random-enum.func';
-import { faker } from '@faker-js/faker';
-import { AddressEntity } from './common/entity/address.entity';
-import { AddressEnum } from './common/enum/address/address.enum';
-import { log } from 'console';
-import { UserDto } from './common/dto/user/user.dto';
 import { UserParam } from './common/param/user/user.param';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
 
 @Injectable()
 export class AppService {
   private _entities: UserEntity[] = [];
   constructor(@InjectMapper() private readonly mapper: Mapper) {
     this._generate();
-    log(this._entities.length, this._entities[0]);
   }
 
   findAll(query: UserParam): UserDto[] {
@@ -25,9 +23,6 @@ export class AppService {
         (userA, UserB) => userA.createAt.getTime() - UserB.createAt.getTime(),
       )
       .filter((user: UserEntity) => {
-        if (user.name.toLowerCase().includes(query.name.toLowerCase()))
-          console.log(user);
-
         if (query.name === undefined || query.name === null) return true;
         return user.name.toLowerCase().includes(query.name.toLowerCase());
       })
@@ -38,7 +33,7 @@ export class AppService {
   }
 
   private _generate(): void {
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 500; i++) {
       const entity: UserEntity = new UserEntity();
       const gender: GenderEnum = getRandomEnumValue(GenderEnum, [0, 1]);
       entity.id = faker.string.uuid();

@@ -1,5 +1,3 @@
-import { Mapper } from '@automapper/core';
-import { InjectMapper } from '@automapper/nestjs';
 import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { UserDto } from './common/dto/user/user.dto';
