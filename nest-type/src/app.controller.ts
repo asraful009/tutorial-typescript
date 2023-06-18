@@ -4,6 +4,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { UserDto } from './common/dto/user/user.dto';
 import { UserParam } from './common/param/user/user.param';
+import { QueryPipe } from './common/pipe/query.pipe';
 
 @Controller()
 export class AppController {
@@ -13,8 +14,10 @@ export class AppController {
   ) {}
 
   @Get()
-  findAll(@Query() query: UserParam): UserDto[] {
-    console.log(query);
+  findAll(
+    @Query(new QueryPipe<UserParam>(UserParam)) query: UserParam,
+  ): UserDto[] {
+    console.log({ query });
 
     const dtoes: UserDto[] = this.appService.getHello(query);
 
