@@ -29,7 +29,6 @@ export class QueryPipe<T extends BaseParam> implements PipeTransform<T> {
     );
 
     for (const key of keys) {
-      console.log(key, rowValue.hasOwnProperty(key));
       if (rowValue.hasOwnProperty(key)) {
         param[key] = rowValue[key];
       }
