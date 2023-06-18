@@ -8,16 +8,26 @@ import { AddressEnum } from './common/enum/address/address.enum';
 import { log } from 'console';
 import { UserDto } from './common/dto/user/user.dto';
 import { UserParam } from './common/param/user/user.param';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
 
 @Injectable()
 export class AppService {
   private _entities: UserEntity[] = [];
-  constructor() {
+  constructor(@InjectMapper() private readonly mapper: Mapper) {
     this._generate();
-    log(this._entities.length);
+    log(this._entities.length, this._entities[0]);
   }
-  getHello(query: UserParam): UserDto[] {
-    return [];
+
+  findAll(query: UserParam): UserDto[] {
+    const dtoes: UserDto[] = this._entities
+      .filter((user: UserEntity) => {
+        return user.name.toLowerCase().includes(query.name.toLowerCase());
+      })
+      .map((entity) => this.mapper.map(entity, UserEntity, UserDto));
+    console.log(dtoes);
+
+    return dtoes;
   }
 
   private _generate(): void {
