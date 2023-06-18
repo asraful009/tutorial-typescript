@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    container_name: nest_db
+    environment:
+      MYSQL_ROOT_PASSWORD: db
+      MYSQL_DATABASE: db
+      MYSQL_USER: db
+      MYSQL_PASSWORD: db
+    volumes:
+      - nest_db:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+volumes:
+  nest_db:
