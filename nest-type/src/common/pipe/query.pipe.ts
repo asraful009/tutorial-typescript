@@ -15,12 +15,17 @@ export class QueryPipe<T extends BaseParam> implements PipeTransform<T> {
   }
 
   private valueFilterTransform(param: T): void {
-    param.pageNo = Number.isInteger(param.pageNo) ? param.pageNo : 1;
+    param.pageNo = Number.isInteger(param.pageNo)
+      ? param.pageNo < 1
+        ? 1
+        : param.pageNo
+      : 1;
     param.pageSize = Number.isInteger(param.pageSize)
       ? param.pageSize > 20
         ? 20
         : param.pageSize
       : 10;
+    param.offset = (param.pageNo - 1) * param.pageSize;
   }
 
   private valueAssignTransform(rowValue: T, param: T): void {

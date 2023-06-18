@@ -21,9 +21,17 @@ export class AppService {
 
   findAll(query: UserParam): UserDto[] {
     const dtoes: UserDto[] = this._entities
-      .filter((user: UserEntity) =>
-        user.name.toLowerCase().includes(query.name.toLowerCase()),
+      .sort(
+        (userA, UserB) => userA.createAt.getTime() - UserB.createAt.getTime(),
       )
+      .filter((user: UserEntity) => {
+        if (user.name.toLowerCase().includes(query.name.toLowerCase()))
+          console.log(user);
+
+        if (query.name === undefined || query.name === null) return true;
+        return user.name.toLowerCase().includes(query.name.toLowerCase());
+      })
+      .slice(query.offset, query.offset + query.pageSize)
       .map((entity) => this.mapper.map(entity, UserEntity, UserDto));
 
     return dtoes;

@@ -9,4 +9,6 @@ export class BaseParam {
 
   @ApiProperty({ default: 'createAt:desc' })
   sortBy: string;
+
+  offset: number;
 }
